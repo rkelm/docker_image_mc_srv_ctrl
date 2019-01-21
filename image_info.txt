@@ -1,0 +1,24 @@
+**************************************************
+Docker Image with tools to start and stop Minecraft server docker images
+The contained docker client needs to be connected to the hosts docker daemon
+by mounting the docker guest's /var/run/docker.sock to the hosts /var/run/docker.sock
+(DooD). So the docker client can control the hosts docker daemon, to load the
+Minecraft server and other docker images on the host.
+
+Usage:
+   Start service: docker run -v <host-world-dir>:<INSTALL_DIR>/world
+                             -v <host-log-dir>:<INSTALL_DIR>/logs
+                             -v /var/run/docker.sock:/var/run/docker.sock
+                             -d <image_name> <INSTALL_DIR>/bin/run_dummy_process.sh
+   Stop service:  docker exec <INSTALL_DIR>/bin/stop_dummy_process.sh
+   The following scripts may be called to control the Minceraft Server.
+     app_cmd.sh - Send command to Mincraft Server rcon console.
+     run_map.sh - Run a map.
+     save_map.sh - Save running map.
+     stop_map.sh - Stop and save running map.
+     Send command usage :  docker exec <INSTALL_DIR>/bin/app_cmd.sh
+                                 '<cmd1> <param1-1> <param1-2> ..'
+                                 '<cmd2> <param2-1> <param2-2> ..'
+          Every app command and its parameters must be single or double quoted.
+**************************************************
+D
