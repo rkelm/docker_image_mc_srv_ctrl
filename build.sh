@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -z $1 ] ; then
-    echo "usage: $(basename $0)"
+    echo "usage: $(basename $0) <app_version>"
     exit 1
 fi
 
@@ -47,8 +47,6 @@ if [ -z "$project_dir" ] ; then
 fi
 echo "Project directory is ${project_dir}."
 
-Hier geht es weiter ++++++++++++++++++
-
 # Prepare rootfs.
 rootfs="${project_dir}/rootfs"
 
@@ -65,16 +63,14 @@ cp ${project_dir}/mcrcon ${rootfs}${install_path}/bin/
 cp ${project_dir}/mcrcon_LICENSE.txt ${rootfs}${install_path}/bin/
 cp ${project_dir}/run_dummy_process.sh ${rootfs}${install_path}/bin/
 cp ${project_dir}/stop_dummy_process.sh ${rootfs}${install_path}/bin/
-cp ${project_dir}/image_info.txt ${rootfs}${install_path}/
+cp ${project_dir}/image_info.txt ${rootfs}/
 cp ${project_dir}/bin/* ${rootfs}${install_path}/bin/
 
 # Build.
 echo "Building $local_repo_tag"
 
 +++ Hier ARG Werte uebergeben
-INSTALL_PATH=${install_path}
-
-RCONPWD="${rconpwd}" docker build "${project_dir}" -t "${local_repo_tag}"
+docker build --build-arg INSTALL_PATH="${install_path}" --build-arg RCONPWD="${rconpwd}" "${project_dir}" -t "${local_repo_tag}"
 errchk $? 'Docker build failed.'
 
 # Get image id.
