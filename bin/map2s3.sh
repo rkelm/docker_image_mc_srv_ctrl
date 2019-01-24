@@ -12,33 +12,33 @@ errchk() {
 
 path=$(dirname $0)
 
-if [ ! -e ${path}/../config.sh ] ; then
-  echo Configuration file ${path}/../config.sh not found.
+if [ ! -e ${path}/config.sh ] ; then
+  echo Configuration file ${path}/config.sh not found.
   exit 1
 fi
 
 set -a
-. $path/../config.sh
+. $path/config.sh
 set +a
 
 # Load map id if not specified as parameter.
 map_id="$1"
 if [ -z "${map_id}" ] ; then
-    if [ ! -e "${app_dir}/map_id.txt" ] ; then
+    if [ ! -e "${INSTALL_PATH}/map_id.txt" ] ; then
         echo "No map active."
         exit 1
     fi
 fi
-map_id=$(cat "${app_dir}/map_id.txt")
+map_id=$(cat "${INSTALL_PATH}/map_id.txt")
 
 subdomain="$2"
 if [ -z "${subdomain}" ] ; then
-    if [ ! -e "${app_dir}/subdomain.txt" ] ; then
+    if [ ! -e "${INSTALL_PATH}/subdomain.txt" ] ; then
         echo "No map active."
         exit 1
     fi
 fi
-subdomain=$(cat "${app_dir}/subdomain.txt")
+subdomain=$(cat "${INSTALL_PATH}/subdomain.txt")
 
 if [ -e "${tmp_dir}/${map_id}.tgz" ] ; then
     rm "${tmp_dir}/${map_id}.tgz"

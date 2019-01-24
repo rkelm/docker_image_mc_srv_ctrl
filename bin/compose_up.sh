@@ -5,7 +5,7 @@
 # fi
 path=$(dirname $0)
 set -a
-. $path/../config.sh
+. $path/config.sh
 set +a
 
 # Login to private repository. Only when necessary?

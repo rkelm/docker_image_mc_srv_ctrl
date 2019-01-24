@@ -13,13 +13,13 @@ errchk() {
 
 path=$(dirname $0)
 
-if [ ! -e ${path}/../config.sh ] ; then
-  echo Configuration file ${path}/../config.sh not found.
+if [ ! -e ${path}/config.sh ] ; then
+  echo Configuration file ${path}/config.sh not found.
   exit 1
 fi
 
 set -a
-. $path/../config.sh
+. $path/config.sh
 set +a
 
 # myinstanceid=$(ec2-metadata --instance-id | cut -d\  -f2)

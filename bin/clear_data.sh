@@ -2,12 +2,12 @@
 
 path=$(dirname $0)
 
-if [ ! -e ${path}/../config.sh ] ; then
-  echo Configuration file ${path}/../config.sh not found.
+if [ ! -e ${path}/config.sh ] ; then
+  echo Configuration file ${path}/config.sh not found.
   exit 1
 fi
 
-. ${path}/../config.sh
+. ${path}/config.sh
 
 _dont_clear_dns="$1"
 

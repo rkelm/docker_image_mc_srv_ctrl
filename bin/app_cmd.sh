@@ -10,12 +10,12 @@ if [ -z "$1" -o "$1" == "-h" ] ; then
     exit
 fi
 
-if [ ! -e ${path}/../config.sh ] ; then
-  echo Configuration file ${path}/../config.sh not found.
+if [ ! -e ${path}/config.sh ] ; then
+  echo Configuration file ${path}/config.sh not found.
   exit 1
 fi
 set -a
-. $path/../config.sh
+. $path/config.sh
 set +a
 
 ${map_data_dir}/bin/app_cmd.sh "$@"

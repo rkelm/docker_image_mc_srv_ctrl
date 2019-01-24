@@ -52,9 +52,9 @@ RUN rm /var/cache/apk/*
 ADD rootfs /
 
 RUN echo -e  "\<install_dir\> is ${INSTALL_DIR} \n " \
-" rcon password is ${RCONPWD}. \n" >> /image_info.txt
+"Default rcon password is ${RCONPWD}. \n" >> /image_info.txt
 
-VOLUME ["${APP_DIR}/world", "${APP_DIR}/logs"]
+VOLUME ["${INSTALL_DIR}/world", "${INSTALL_DIR}/logs"]
 
 EXPOSE 25565 25575
 

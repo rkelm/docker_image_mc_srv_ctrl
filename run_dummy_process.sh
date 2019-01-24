@@ -20,7 +20,7 @@ sigterm_handler() {
 trap sigterm_handler SIGTERM
 
 # Run app.
-cd "$APP_DIR"
+cd "$INSTALL_DIR"
 tail -f /dev/null &
 pid="$!"
 echo $pid > ${INSTALL_DIR}/pid.txt
