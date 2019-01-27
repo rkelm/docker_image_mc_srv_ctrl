@@ -54,7 +54,7 @@ ADD rootfs /
 RUN echo -e  "\<install_dir\> is ${INSTALL_DIR} \n " \
 "Default rcon password is ${RCONPWD}. \n" >> /image_info.txt
 
-VOLUME ["${INSTALL_DIR}/world", "${INSTALL_DIR}/logs"]
+VOLUME ["${INSTALL_DIR}/map_data", "${INSTALL_DIR}/map_logs"]
 
 EXPOSE 25565 25575
 

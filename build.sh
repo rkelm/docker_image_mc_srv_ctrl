@@ -11,7 +11,7 @@ rconpwd="$BAKERY_RCONPWD"
 local_repo_path="$BAKERY_LOCAL_REPO_PATH"
 remote_repo_path="$BAKERY_REMOTE_REPO_PATH"
 repo_name="mc_srv_ctrl"
-install_path="/opt/mc_srv_ctrl"
+install_dir="/opt/mc_srv_ctrl"
 
 # Some options may be set directly in the Dockerfile.
 
@@ -54,23 +54,23 @@ echo "Cleaning up rootfs from previous build."
 rm -frd "$rootfs"
 
 echo "Preparing rootfs."
-mkdir -p "${rootfs}${install_path}"
-mkdir -p "${rootfs}${install_path}/world"
-mkdir -p "${rootfs}${install_path}/logs"
-mkdir -p "${rootfs}${install_path}/bin"
+mkdir -p "${rootfs}${install_dir}"
+mkdir -p "${rootfs}${install_dir}/map_data"
+mkdir -p "${rootfs}${install_dir}/map_logs"
+mkdir -p "${rootfs}${install_dir}/bin"
 
-cp ${project_dir}/mcrcon ${rootfs}${install_path}/bin/
-cp ${project_dir}/mcrcon_LICENSE.txt ${rootfs}${install_path}/bin/
-cp ${project_dir}/run_dummy_process.sh ${rootfs}${install_path}/bin/
-cp ${project_dir}/stop_dummy_process.sh ${rootfs}${install_path}/bin/
+cp ${project_dir}/mcrcon ${rootfs}${install_dir}/bin/
+cp ${project_dir}/mcrcon_LICENSE.txt ${rootfs}${install_dir}/bin/
+cp ${project_dir}/run_dummy_process.sh ${rootfs}${install_dir}/bin/
+cp ${project_dir}/stop_dummy_process.sh ${rootfs}${install_dir}/bin/
 cp ${project_dir}/image_info.txt ${rootfs}/
-cp ${project_dir}/bin/* ${rootfs}${install_path}/bin/
+cp ${project_dir}/bin/* ${rootfs}${install_dir}/bin/
 
 # Build.
 echo "Building $local_repo_tag"
 
 +++ Hier ARG Werte uebergeben
-docker build --build-arg INSTALL_PATH="${install_path}" --build-arg RCONPWD="${rconpwd}" "${project_dir}" -t "${local_repo_tag}"
+docker build --build-arg INSTALL_DIR="${install_dir}" --build-arg RCONPWD="${rconpwd}" "${project_dir}" -t "${local_repo_tag}"
 errchk $? 'Docker build failed.'
 
 # Get image id.
