@@ -22,6 +22,9 @@ ENV PATH ${INSTALL_DIR}/bin:$PATH
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/latest-stable/community" >> /etc/apk/repositories
 RUN apk update
 
+# Install bash.
+RUN apk --update add bash
+
 # Install curl.
 RUN apk --update add curl
 
