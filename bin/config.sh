@@ -3,8 +3,8 @@
 instance_tagkey="$AWS_TAGKEY"
 instance_tagvalue="$AWS_TAGVALUE"
 bucket="$MAP_BUCKET"
-bucket_map_dir="${$BUCKET_MAP_DIR:-'maps'}"
-bucket_logs_dir="${$BUCKET_LOGS_DIR:-'logs'}"
+bucket_map_dir="${$BUCKET_MAP_DIR:-maps}"
+bucket_logs_dir="${$BUCKET_LOGS_DIR:-logs}"
 
 # Constants.
 bin_dir="${INSTALL_PATH}/bin"
