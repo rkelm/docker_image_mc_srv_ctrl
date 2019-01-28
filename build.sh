@@ -69,7 +69,6 @@ cp ${project_dir}/bin/* ${rootfs}${install_dir}/bin/
 # Build.
 echo "Building $local_repo_tag"
 
-+++ Hier ARG Werte uebergeben
 docker build --build-arg INSTALL_DIR="${install_dir}" --build-arg RCONPWD="${rconpwd}" "${project_dir}" -t "${local_repo_tag}"
 errchk $? 'Docker build failed.'
 
