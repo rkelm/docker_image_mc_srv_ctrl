@@ -5,6 +5,7 @@ instance_tagvalue="$AWS_TAGVALUE"
 bucket="$MAP_BUCKET"
 bucket_map_dir="${BUCKET_MAP_DIR:-maps}"
 bucket_logs_dir="${BUCKET_LOGS_DIR:-logs}"
+region="${REGION}
 
 # Constants.
 bin_dir="${INSTALL_PATH}/bin"

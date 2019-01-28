@@ -9,7 +9,7 @@ set -a
 set +a
 
 # Login to private repository. Only when necessary?
-docker_login=$(aws ecr get-login --region eu-central-1 --no-include-email)
+docker_login=$(aws ecr get-login --region ${region} --no-include-email)
 $docker_login
 if [ "$?" != "0" ]; then
   echo "Login to private respository failed."
