@@ -22,8 +22,6 @@ set -a
 . $path/config.sh
 set +a
 
-# myinstanceid=$(ec2-metadata --instance-id | cut -d\  -f2)
-
 # *** Check parameters / show usage. ***
 
 if [ "$1" == "-h" ] ; then

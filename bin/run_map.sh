@@ -26,7 +26,9 @@ set -a
 . $path/config.sh
 set +a
 
-myinstanceid=$(/opt/aws/bin/ec2-metadata --instance-id | cut -d\  -f2)
+# myinstanceid=$(/opt/aws/bin/ec2-metadata --instance-id | cut -d\  -f2)
+
+myinstance=$( curl -s http://169.254.169.254/latest/meta-data/instance-id )
 
 # *** Check parameters / show usage. ***
 map_id=$1
@@ -104,7 +106,8 @@ errchk $? 'aws create-tags call failed.'
 # Check if this is a different subdomain than the current active subdomain.
 # *** Setup DNS ***
 if [ -e $dns_setup ] ; then
-    ipaddr=$(/opt/aws/bin/ec2-metadata --public-ipv4 | cut -d\  -f2)
+    #     ipaddr=$(/opt/aws/bin/ec2-metadata --public-ipv4 | cut -d\  -f2)
+    ipaddr=$( curl -s http://169.254.169.254/latest/meta-data/public-ipv4 )
     echo Aktualisiere Subdomain $subdomain auf $ipaddr.
     $dns_setup $subdomain $ipaddr
 fi
