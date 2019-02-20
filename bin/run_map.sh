@@ -28,7 +28,7 @@ set +a
 
 # myinstanceid=$(/opt/aws/bin/ec2-metadata --instance-id | cut -d\  -f2)
 
-myinstance=$( curl -s http://169.254.169.254/latest/meta-data/instance-id )
+myinstanceid=$( curl -s http://169.254.169.254/latest/meta-data/instance-id )
 
 # *** Check parameters / show usage. ***
 map_id=$1
@@ -80,7 +80,8 @@ fi
 echo "Retrieved subdomain name $subdomain."
 
 # *** Check if map is in use by any other ec2 instance. ***
-instanceid=$(aws ec2 describe-instances --region "$region" --filters Name=instance-state-name,Values=running,shutting-down Name=tag:${instance_tagkey}=${instance_tagvalue} Name=tag:subdomain=${subdomain} --query Reservations[*].Instances[*].InstanceId --output text )
+# instanceid=$(aws ec2 describe-instances --region "$region" --filters Name=instance-state-name,Values=running,shutting-down Name=tag:${instance_tagkey}=${instance_tagvalue} Name=tag:subdomain=${subdomain} --query Reservations[*].Instances[*].InstanceId --output text )
+instanceid=$(aws ec2 describe-instances --region "$region" --filters Name=instance-state-name,Values=running,shutting-down Name=tag:${instance_tagkey} Name=tag:subdomain=${subdomain} --query Reservations[*].Instances[*].InstanceId --output text )
 errchk $? 'aws describe-instances call failed.'
 
 if [ ! -z $instanceid ] ; then
