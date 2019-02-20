@@ -8,8 +8,8 @@ bucket_logs_dir="${BUCKET_LOGS_DIR:-logs}"
 region="${REGION}"
 
 # Constants.
-bin_dir="${INSTALL_PATH}/bin"
-data_store="${INSTALL_PATH}"
+bin_dir="${INSTALL_DIR}/bin"
+data_store="${INSTALL_DIR}"
 map_data_dir="${data_store}/map_data"
 # worlds_dir="${map_data_dir}/worlds"
 map_logs_dir="${data_store}/map_logs"
