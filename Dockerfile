@@ -35,7 +35,7 @@ RUN mkdir -p /tmp/download \
     && rm -rf /tmp/download \
     && rm -rf /var/cache/apk/*
 
-# Install python
+# Install python 2
 RUN apk -v --update add \
         python \
         py-pip \
@@ -43,11 +43,19 @@ RUN apk -v --update add \
         less \
         mailcap \
         && \
-    pip install --upgrade \
-        awscli==${AWS_CLI_VERSION} \
-        s3cmd==${S3CMD_VERSION} \
+    pip install --upgrade pip \
 	python-magic \
+	boto3 \
+	awscli \
+	s3cmd \
+	toml \
 	docker-compose 
+
+# Install python3
+RUN apk -v --update add python3 && python3 -m pip install --upgrade pip toml awscli boto3
+
+#        awscli==${AWS_CLI_VERSION} \
+#        s3cmd==${S3CMD_VERSION} \
 
 # Remove apk cache files.
 RUN rm /var/cache/apk/*
