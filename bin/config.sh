@@ -16,4 +16,4 @@ map_logs_dir="${data_store}/map_logs"
 # dns_setup="${bin_dir}/setup_dns_twodns.sh"
 dns_setup="${bin_dir}/setup_dns_route53.py"
 tmp_dir='/tmp'
-docker_compose='/usr/local/bin/docker-compose'
+docker_compose='/usr/bin/docker-compose'
