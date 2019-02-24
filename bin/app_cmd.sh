@@ -18,7 +18,9 @@ set -a
 . $path/config.sh
 set +a
 
-${map_data_dir}/bin/app_cmd.sh "$@"
+# ${map_data_dir}/bin/app_cmd.sh "$@"
+"$docker_compose" -f "${map_data_dir}/docker-compose.yml" exec -T mc app_cmd.sh "$@"
+
 
 # docker-compose exec always returns exit code 1 even though command succeeded.
 # Overwrite with success code
