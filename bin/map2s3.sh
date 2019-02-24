@@ -24,21 +24,21 @@ set +a
 # Load map id if not specified as parameter.
 map_id="$1"
 if [ -z "${map_id}" ] ; then
-    if [ ! -e "${INSTALL_PATH}/map_id.txt" ] ; then
+    if [ ! -e "${data_store}/map_id.txt" ] ; then
         echo "No map active."
         exit 1
     fi
 fi
-map_id=$(cat "${INSTALL_PATH}/map_id.txt")
+map_id=$(cat "${data_store}/map_id.txt")
 
 subdomain="$2"
 if [ -z "${subdomain}" ] ; then
-    if [ ! -e "${INSTALL_PATH}/subdomain.txt" ] ; then
+    if [ ! -e "${data_store}/subdomain.txt" ] ; then
         echo "No map active."
         exit 1
     fi
 fi
-subdomain=$(cat "${INSTALL_PATH}/subdomain.txt")
+subdomain=$(cat "${data_store}/subdomain.txt")
 
 if [ -e "${tmp_dir}/${map_id}.tgz" ] ; then
     rm "${tmp_dir}/${map_id}.tgz"
