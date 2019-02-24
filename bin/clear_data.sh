@@ -36,22 +36,13 @@ if [ -z "$data_store" ] ; then
   exit 1
 fi
 
-if [ -z "$render_output" ] ; then
-  echo "Variable render_output is not set"
-  exit 1
-fi
-
-
 # Clear map data directory?.
 echo Clearing map directory.
-sudo rm -fr ${map_data_dir}/*
-sudo rm -f ${data_store}/map_id.txt
+rm -fr ${map_data_dir}/*
+rm -f ${data_store}/map_id.txt
 
 echo Clearing logs.
-sudo rm -fr ${map_logs_dir}/*
-
-echo Clearing render output.
-sudo rm -fr ${render_output}/*
+rm -fr ${map_logs_dir}/*
 
 if [ "$_dont_clear_dns" == "--dont_clear_dns" ] ; then
     echo "Skipping unsetting subdomain in DNS."
