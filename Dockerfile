@@ -67,6 +67,6 @@ RUN echo -e  "\<install_dir\> is ${INSTALL_DIR} \n " \
 
 VOLUME ["${INSTALL_DIR}/map_data", "${INSTALL_DIR}/map_logs"]
 
-EXPOSE 25565 25575
+# EXPOSE 25565 25575
 
 CMD ["/bin/cat", "/image_info.txt"]
