@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.10
 
 ARG DOCKER_VERSION="18.06.1-ce"
 ARG AWS_CLI_VERSION="1.16.84"
@@ -41,18 +41,20 @@ RUN apk -v --update add \
         py-pip \
         groff \
         less \
-        mailcap \
-        && \
-    pip install --upgrade pip \
-	python-magic \
-	boto3 \
-	awscli \
-	s3cmd \
-	toml \
-	docker-compose 
+        mailcap 
+RUN pip install --upgrade pip
+RUN pip install --upgrade python-magic
+RUN pip install --upgrade boto3
+RUN pip install --upgrade awscli
+RUN pip install --upgrade s3cmd
+RUN pip install --upgrade toml
+RUN apk add python-dev libffi-dev openssl-dev gcc libc-dev make
+RUN pip install --upgrade docker-compose 
 
 # Install python3
-RUN apk -v --update add python3 && python3 -m pip install --upgrade pip toml awscli boto3
+RUN apk -v --update add python3
+RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install --upgrade toml awscli boto3
 
 #        awscli==${AWS_CLI_VERSION} \
 #        s3cmd==${S3CMD_VERSION} \
