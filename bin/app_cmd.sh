@@ -19,8 +19,12 @@ set -a
 set +a
 
 # ${map_data_dir}/bin/app_cmd.sh "$@"
-"$docker_compose" -f "${map_data_dir}/docker-compose.yml" exec -T mc app_cmd.sh "$@"
+#"$docker_compose" -f "${map_data_dir}/docker-compose.yml" exec -T mc app_cmd.sh "$@"
 
+# Send each command with its parameters in a single call to the server.
+for cmd in "$@" ; do
+    "$docker_compose" -f "${map_data_dir}/docker-compose.yml" exec -T mc app_cmd.sh "$cmd"
+done
 
 # docker-compose exec always returns exit code 1 even though command succeeded.
 # Overwrite with success code
