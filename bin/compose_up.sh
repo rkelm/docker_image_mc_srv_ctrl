@@ -3,7 +3,17 @@
 #   echo "usage: sudo $(basename $0)"' <path to compose file>'
 #   exit 1
 # fi
+
 path=$(dirname $0)
+
+# Copy stdout and stderr via named pipe to stdout of container for logging.
+_fifo="/container_stdout"
+exec >  >(tee -ia "$_fifo")
+exec 2> >(tee -ia "$_fifo" >&2)
+
+# Log call and parameters.
+echo "\"$0 $@\" called" > "$_fifo"
+
 set -a
 . $path/config.sh
 set +a

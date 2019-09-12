@@ -2,6 +2,14 @@
 
 path=$(dirname $0)
 
+# Copy stdout and stderr via named pipe to stdout of container for logging.
+_fifo="/container_stdout"
+exec >  >(tee -ia "$_fifo")
+exec 2> >(tee -ia "$_fifo" >&2)
+
+# Log call and parameters.
+echo "\"$0 $@\" called" > "$_fifo"
+
 if [ ! -e ${path}/config.sh ] ; then
   echo Configuration file ${path}/config.sh not found.
   exit 1
@@ -21,16 +29,6 @@ if [ ! -d "$map_data_dir" ] ; then
   exit 1
 fi
 
-if [ -z "$map_logs_dir" ] ; then
-  echo "Variable map_logs_dir not set!"
-  exit 1
-fi
-
-if [ ! -d "$map_logs_dir" ] ; then
-  echo "$map_logs_dir is not a directory"
-  exit 1
-fi
-
 if [ -z "$data_store" ] ; then
   echo "Variable data_store is not set"
   exit 1
@@ -40,9 +38,6 @@ fi
 echo Clearing map directory.
 rm -fr ${map_data_dir}/*
 rm -f ${data_store}/map_id.txt
-
-echo Clearing logs.
-rm -fr ${map_logs_dir}/*
 
 if [ "$_dont_clear_dns" == "--dont_clear_dns" ] ; then
     echo "Skipping unsetting subdomain in DNS."

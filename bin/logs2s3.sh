@@ -1,6 +1,17 @@
 #!/bin/bash
 # Packs logs and stores them in s3.
 
+# Copy stdout and stderr via named pipe to stdout of container for logging.
+_fifo="/container_stdout"
+exec >  >(tee -ia "$_fifo")
+exec 2> >(tee -ia "$_fifo" >&2)
+
+# Log call and parameters.
+echo "\"$0 $@\" called" > "$_fifo"
+
+echo "logs2s3.sh should not be called anymore, since switch to cloudwatch logging!"
+exit 1
+
 errchk() {
   if [ ! $1 == 0 ] ; then
     echo '*** ERROR ***' 1>&2

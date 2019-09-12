@@ -1,6 +1,14 @@
 #!/bin/bash
 # Packs a map and stores it in s3.
 
+# Copy stdout and stderr via named pipe to stdout of container for logging.
+_fifo="/container_stdout"
+exec >  >(tee -ia "$_fifo")
+exec 2> >(tee -ia "$_fifo" >&2)
+
+# Log call and parameters.
+echo "\"$0 $@\" called" > "$_fifo"
+
 errchk() {
   if [ ! $1 == 0 ] ; then
     echo '*** ERROR ***' 1>&2
@@ -49,8 +57,7 @@ echo "Uploading ${map_id}.tgz"
 aws s3 --region "$region" cp "${tmp_dir}/${map_id}.tgz" "s3://${bucket}/${bucket_map_dir}/"
 errchk $? "aws s3 cp call failed for s3://${bucket}/${bucket_map_dir}/${map_id}.tgz."
 
-echo "Setting subdomain"
-echo "Marking as 'do-not-archive' (keep=false)."
+echo "Setting subdomainand marking as 'do-not-archive' (keep=false)."
 versionid=$( aws s3api --region "$region" put-object-tagging --bucket "$bucket" --key "${bucket_map_dir}/${map_id}.tgz" --tagging "TagSet=[{Key=subdomain,Value=${subdomain}},{Key=keep,Value=false}]" --output text )
 errchk $? 'aws put-object-tagging call failed.'
 

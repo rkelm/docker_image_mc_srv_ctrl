@@ -1,6 +1,14 @@
 #!/bin/bash
 # Script to save an active map.
 
+# Copy stdout and stderr via named pipe to stdout of container for logging.
+_fifo="/container_stdout"
+exec >  >(tee -ia "$_fifo")
+exec 2> >(tee -ia "$_fifo" >&2)
+
+# Log call and parameters.
+echo "\"$0 $@\" called" > "$_fifo"
+
 # Error handler.
 errchk() {
   if [ ! $1 == 0 ] ; then
@@ -44,7 +52,7 @@ _map_id=$( cat ${data_store}/map_id.txt )
 _subdomain=$( cat ${data_store}/subdomain.txt )
 
 # Test if app is running.
-ps_id=$( map_data_dir=${map_data_dir} map_logs_dir=${map_logs_dir} ${docker_compose} -f "${map_data_dir}/docker-compose.yml" ps -q mc )
+ps_id=$( map_data_dir=${map_data_dir} ${docker_compose} -f "${map_data_dir}/docker-compose.yml" ps -q mc )
 
 # Is server running?
 if [ -n "$ps_id" ]; then

@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Copy stdout and stderr via named pipe to stdout of container for logging.
+_fifo="/container_stdout"
+exec >  >(tee -ia "$_fifo")
+exec 2> >(tee -ia "$_fifo" >&2)
+
+# Log call and parameters.
+echo "\"$0 $@\" called" > "$_fifo"
+
 errchk() {
   if [ ! $1 == 0 ] ; then
     echo '*** ERROR ***' 1>&2
@@ -99,6 +107,7 @@ if [ "$subdomain" == "$old_subdomain" ] ; then
 fi
 ${bin_dir}/stop_map.sh $dont_clear_dns
 errchk $? 'Could not stop and save map.'
+echo 'Stopped prior running world.'
 
 # *** Mark new map as in use now. ***
 aws ec2 --region "$region" create-tags --resources $myinstanceid --tags Key=subdomain,Value=$subdomain 
@@ -117,6 +126,7 @@ fi
 echo $subdomain > "${data_store}/subdomain.txt"
 
 # Retrieve map files.
+echo "Downloading new map."
 aws s3 --region "$region" cp "s3://${bucket}/${bucket_map_dir}/${map_id}.tgz" "${tmp_dir}"
 errchk $? "aws s3 cp call failed for s3://${bucket}/${bucket_map_dir}/${map_id}.tgz."
 
@@ -130,5 +140,6 @@ echo $map_id > ${data_store}/map_id.txt
 
 # Run app in docker container, unless --dontrun specified.
 if [ -z "$dontrun" ] ; then
+    echo "Starting world."
     ${bin_dir}/compose_up.sh
 fi
