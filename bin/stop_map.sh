@@ -58,21 +58,38 @@ if [ -n "$ps_id" ]; then
 #    "$docker_compose" -f "${map_data_dir}/docker-compose.yml" exec  
 
     _command_cmd="${bin_dir}/app_cmd.sh"
-    
-    $_command_cmd "say Server_shutting_down_in_10_seconds!!"
+    $command_cmd 'say Server shutting down in 10 seconds!!'
+    echo 'say Server shutting down in 10 seconds!!'
     sleep 5
-    $_command_cmd "say Server_shutting_down_in_5_seconds!!"
+    $command_cmd 'say Server shutting down in 5 seconds!!'
+    echo 'say Server shutting down in 5 seconds!!'
     sleep 2
-    $_command_cmd "say Server_shutting_down_in_3_seconds!!"
+    $command_cmd 'say Server shutting down in 3 seconds!!'
+    echo 'say Server shutting down in 3 seconds!!'
     sleep 1
-    $_command_cmd "say Server_shutting_down_in_2_seconds!!"
+    $command_cmd 'say Server shutting down in 2 seconds!!'
+    echo 'say Server shutting down in 2 seconds!!'
     sleep 1
-    $_command_cmd "say Server_shutting_down_in_1_second!!"
+    $command_cmd 'say Server shutting down in 1 second!!'
+    echo 'say Server shutting down in 1 second!!'
     sleep 1
+    
+#    $_command_cmd "say Server shutting down in 10 seconds!!"
+    
+#    sleep 5
+#    $_command_cmd "say Server shutting down in 5 seconds!!"
+#    sleep 2
+#    $_command_cmd "say Server_shutting_down_in_3_seconds!!"
+#    sleep 1
+#    $_command_cmd "say Server_shutting_down_in_2_seconds!!"
+#    sleep 1
+#    $_command_cmd "say Server_shutting_down_in_1_second!!"
+#    sleep 1
+
     $_command_cmd "save-all"
 
-    echo 'Stopping Server.'
-    $_command_cmd "stop"
+#    echo 'Stopping Server.'
+#    $_command_cmd "stop"
 
     echo 'Terminating Server.'
     ${bin_dir}/compose_down.sh
