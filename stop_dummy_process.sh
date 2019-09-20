@@ -1,12 +1,12 @@
 #!/bin/ash
-# Script to gracefully stop mc server.
+# Script to gracefully stop dummy process.
 
 _fifo=/container_stdout
 
 echo "Gracefully stopping." > "$_fifo"
 echo "Stopping and saving map." > "$_fifo"
 
-# Shutdown and save running map before quitting down.
+# Shutdown a running mc server and save a map before shutdown (in case a map may be running).
 "${INSTALL_DIR}/bin/stop_map.sh"
 
 # Do we have a process id?
