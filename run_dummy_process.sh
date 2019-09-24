@@ -25,7 +25,7 @@ print_ec2_metadata public-hostname
 sigterm_handler() {
     # app still running?
     echo "Caught SIGTERM signal."
-    "$INSTALLDIR/bin/stop_dummy_process.sh"
+    "$INSTALL_DIR/bin/stop_dummy_process.sh"
     
  #   if test -n "$pid" ; then
 #	_out=$(ps -o pid | grep -w "$pid")
