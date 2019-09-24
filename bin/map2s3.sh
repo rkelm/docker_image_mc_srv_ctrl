@@ -57,7 +57,7 @@ echo "Uploading ${map_id}.tgz"
 aws s3 --region "$region" cp "${tmp_dir}/${map_id}.tgz" "s3://${bucket}/${bucket_map_dir}/"
 errchk $? "aws s3 cp call failed for s3://${bucket}/${bucket_map_dir}/${map_id}.tgz."
 
-echo "Setting subdomainand marking as 'do-not-archive' (keep=false)."
+echo "Setting subdomain and marking as 'do-not-archive' (keep=false)."
 versionid=$( aws s3api --region "$region" put-object-tagging --bucket "$bucket" --key "${bucket_map_dir}/${map_id}.tgz" --tagging "TagSet=[{Key=subdomain,Value=${subdomain}},{Key=keep,Value=false}]" --output text )
 errchk $? 'aws put-object-tagging call failed.'
 
