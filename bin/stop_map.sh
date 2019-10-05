@@ -7,7 +7,9 @@ exec >  >(tee -ia "$_fifo")
 exec 2> >(tee -ia "$_fifo" >&2)
 
 # Log call and parameters.
-echo "\"$0 $@\" called" > "$_fifo"
+echo "[DEBUG] \"$0 $@\" called" > "$_fifo"
+
+_timing_sec_start=${SECONDS}
 
 # Error hangdler.
 errchk() {
@@ -22,7 +24,7 @@ errchk() {
 path=$(dirname $0)
 
 if [ ! -e ${path}/config.sh ] ; then
-  echo Configuration file ${path}/config.sh not found.
+  echo "[ERROR] Configuration file ${path}/config.sh not found."
   exit 1
 fi
 
@@ -43,7 +45,7 @@ fi
 _dont_clear_dns="$2"
 
 if [ ! -e ${data_store}/map_id.txt ] ; then
-    echo 'No map active. No map to stop or save.'
+    echo '[DEBUG] No map active. No map to stop or save.'
     exit 0
 fi
 
@@ -54,38 +56,39 @@ _subdomain=$( cat ${data_store}/subdomain.txt )
 ps_id=$( map_data_dir=${map_data_dir} ${docker_compose} -f "${map_data_dir}/docker-compose.yml" ps -q mc )
 
 if [ -n "$ps_id" ]; then
-    echo "Announcing stop of world to players ($_map_id)."
+    echo "[DEBUG] Announcing stop of world to players ($_map_id)."
 #    "$docker_compose" -f "${map_data_dir}/docker-compose.yml" exec  
 
     _command_cmd="${bin_dir}/app_cmd.sh"
     $_command_cmd 'say Server shutting down in 10 seconds!!'
-    echo 'say Server shutting down in 10 seconds!!'
+    echo '[DEBUG] say Server shutting down in 10 seconds!!'
     sleep 5
     $_command_cmd 'say Server shutting down in 5 seconds!!'
-    echo 'say Server shutting down in 5 seconds!!'
+    echo '[DEBUG] say Server shutting down in 5 seconds!!'
     sleep 2
     $_command_cmd 'say Server shutting down in 3 seconds!!'
-    echo 'say Server shutting down in 3 seconds!!'
+    echo '[DEBUG] say Server shutting down in 3 seconds!!'
     sleep 1
     $_command_cmd 'say Server shutting down in 2 seconds!!'
-    echo 'say Server shutting down in 2 seconds!!'
+    echo '[DEBUG] say Server shutting down in 2 seconds!!'
     sleep 1
     $_command_cmd 'say Server shutting down in 1 second!!'
-    echo 'say Server shutting down in 1 second!!'
+    echo '[DEBUG] say Server shutting down in 1 second!!'
     sleep 1
     
     $_command_cmd "save-all"
 
-    echo 'Terminating Server.'
-    ${bin_dir}/compose_down.sh
+    echo '[DEBUG] Terminating Server.'
+    ${bin_dir}/compose_down.sh &>/dev/null
 else
-    echo 'Server not running.'
+    echo '[DEBUG] Server not running.'
 fi
 
-echo "Storing map with map id $_map_id."
+echo "[DEBUG] Storing map with map id $_map_id."
 ${bin_dir}/save_map.sh 
-#${bin_dir}/map2s3.sh "${_map_id}" "${_subdomain}"
-errchk $? "Error saving map with map id $_map_id to s3."
+
+errchk $? "[ERROR] Error saving map with map id $_map_id to s3."
 
 ${bin_dir}/clear_data.sh "$_dont_clear_dns"
-errchk $? 'Could not clear old map data and dns.'
+errchk $? '[ERROR] Could not clear old map data and dns.'
+echo "[DEBUG] $0 ending, exec time:" $(( SECONDS - _timing_sec_start )) "seconds"

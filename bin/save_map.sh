@@ -7,13 +7,15 @@ exec >  >(tee -ia "$_fifo")
 exec 2> >(tee -ia "$_fifo" >&2)
 
 # Log call and parameters.
-echo "\"$0 $@\" called" > "$_fifo"
+echo "[DEBUG] \"$0 $@\" called" > "$_fifo"
+
+_timing_sec_start=${SECONDS}
 
 # Error handler.
 errchk() {
   if [ ! $1 == 0 ] ; then
     echo '*** ERROR ***' 1>&2
-    echo $2 1>&2
+    echo "[DEBUG]" $2 1>&2
     echo 'Exiting.' 1>&2
     exit 1
   fi
@@ -22,7 +24,7 @@ errchk() {
 path=$(dirname $0)
 
 if [ ! -e ${path}/config.sh ] ; then
-  echo Configuration file ${path}/config.sh not found.
+  echo "[ERROR ] Configuration file ${path}/config.sh not found."
   exit 1
 fi
 
@@ -41,7 +43,7 @@ fi
 _stopserver="$2"
 
 if [ ! -e ${data_store}/map_id.txt ] ; then
-    echo 'No map active. No map to stop or save.'
+    echo '[DEBUG] No map active. No map to stop or save.'
     exit 0
 fi
 
@@ -56,19 +58,20 @@ ps_id=$( map_data_dir=${map_data_dir} ${docker_compose} -f "${map_data_dir}/dock
 
 # Is server running?
 if [ -n "$ps_id" ]; then
-    echo "Server is running. Saving and deactivating auto-save."    
+    echo "[DEBUG] Server is running. Saving and deactivating auto-save."    
     $_command_cmd "save-all"
     $_command_cmd "save-off"
 else
-    echo 'Server not running.'
+    echo '[DEBUG] Server not running.'
 fi
 
-echo "Storing map $_map_id."
+echo "[DEBUG] Storing map $_map_id."
 ${bin_dir}/map2s3.sh "${_map_id}" "${subdomain}"
 _rc=$?
 if [ -n "$ps_id" ]; then
-    echo "Reactivating auto-save."
+    echo "[DEBUG] Reactivating auto-save."
     $_command_cmd "save-on"
 fi
 
 errchk $_rc "Error saving map $_map_id to s3."
+echo "[DEBUG] $0 ending, exec time:" $(( SECONDS - _timing_sec_start )) "seconds"

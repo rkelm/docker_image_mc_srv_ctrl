@@ -9,7 +9,7 @@ exec >  >(tee -ia "$_fifo")
 exec 2> >(tee -ia "$_fifo" >&2)
 
 # Log call and parameters.
-echo "\"$0 $@\" called" > "$_fifo"
+echo "[DEBUG] \"$0 $@\" called" > "$_fifo"
 
 if [ -z "$1" -o "$1" == "-h" ] ; then
     echo "usage: $(basename $0) <mc_cmd1> [<mc_cmd2>] [<mc_cmd3>] ..."
